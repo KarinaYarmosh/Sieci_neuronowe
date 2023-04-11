@@ -2,49 +2,51 @@ import math
 import random
 
 
-def fun(n,lista_x_old, lista_x_new,epsilon, c):
-    lista_do_max = []
-    for i in range(n):
-        lista_do_max.append(lista_x_new[i] - lista_x_old[i])
-    a = max(lista_do_max)
-    while a > epsilon:
-        x_old = lista_x_new[0]
+def fun(n, lista_x_old, lista_x_new, epsilon, c):
+    while True:
+        lista_max = []
         for i in range(n):
-            xi_new = x_old - c*(df1(lista_x_old[0], lista_x_old[1], lista_x_old[2])/lista_x_old[i])
-            print(xi_new)
+            a = abs(lista_x_new[i] - lista_x_old[i])
+            lista_max.append(a)
+        maxim = max(lista_max)
+        print("MAX: ", maxim)
+        if maxim <= epsilon:
+            break
+        dla_f = []
+        for i in range(n):
+            lista_x_old[i] = lista_x_new[i]
+            lista_x_new[i] = lista_x_old[i] - c * dfx(lista_x_old[0], lista_x_old[1], lista_x_old[2])[i]
+            print("X_NEW: ", lista_x_new[i])
+            dla_f.append(lista_x_new[i])
+        print("F: ", f(dla_f[0], dla_f[1], dla_f[2]))
+        dla_f.clear()
 
+def f(x1,x2,x3):
+    return 2*x1**2 + 2*x2**2 + x3 - 2*x1*x2 - 2*x2*x3 - 2*x1 + 3
 
-def f1(x1,x2,x3):
-    return 2*x1^2+2*x2^2+x3^2-2*x1*x2-2*x2*x3-2*x1+3
-
-def df1(x1,x2,x3):
-    return 4*x1+4*x2+2*x3-6
+def dfx(x1,x2,x3):
+    return [4*x1-2*x2-2, 4*x2-2*x3-2*x1, 2*x3-2*x2]
 
 def main():
     c = 0.01
-    epsilon =  0.00001
+    epsilon = 0.0000001
     N = 50
-    #n = 2*N/c
-    n=3
-    lista_x_old=[]
-    #for i in range(math.ceil(n)):
-    #nie ma przedzilu!
+    n = 3
+    lista_x_old = []
+    print("I")
     for i in range(n):
-        xi_old = random.uniform(-N,N)
-        print("xi_old: ", xi_old)
+        xi_old = random.uniform(-N, N)
         lista_x_old.append(xi_old)
     lista_x_old.sort()
-    print(lista_x_old)
-    x_old_sum = sum(lista_x_old)
-    print(x_old_sum)
+    print("LISTA X_OLD: ", lista_x_old)
+    print("II")
     lista_x_new = []
     for i in range(n):
-        xi_new = lista_x_old[i]-c*(df1(lista_x_old[0], lista_x_old[1], lista_x_old[2])/lista_x_old[i])
-        print("x_new_", i, " :", xi_new)
+        xi_new = lista_x_old[i] - c * dfx(lista_x_old[0], lista_x_old[1], lista_x_old[2])[i]
         lista_x_new.append(xi_new)
-    lista_x_new.sort()
-    print(lista_x_new)
-    fun(n,lista_x_old, lista_x_new,epsilon, c)
+    print("LISTA X_NEW: ", lista_x_new)
+    print("III")
+    fun(n, lista_x_old, lista_x_new, epsilon, c)
 
 if __name__ == '__main__':
     main()
