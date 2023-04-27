@@ -1,0 +1,95 @@
+import math
+
+import numpy as np
+
+
+def df_dx(x):
+    beta = 1.0
+    return beta*math.exp(-beta*x) / (1+math.exp(-beta*x))**2
+
+def f(x):
+    beta = 1.0
+    return 1 / (1 + math.exp(-beta * x))
+
+def x(p, w_old):
+    x_result = np.zeros(3)
+    for i in range(2):
+        for j in range(3):
+            x_result[i] += w_old[i][j]*u[p][j]
+        x_result[i] = f(x_result[i])
+    x_result[2] = 1
+    return x_result
+
+def fun(n, s, lista_s_new, w1, lista_w1_new, w2, lista_w2_new, epsilon, c, b):
+    while True:
+        lista_max_s = []
+        lista_max_w1 = []
+        lista_max_w2 = []
+        for i in range(n):
+            a = abs(lista_s_new[i] - s[i])
+            b = abs(lista_w1_new[i] - w1[i])
+            c = abs(lista_w2_new[i] - w2[i])
+            lista_max_s.append(a)
+            lista_max_w1.append(b)
+            lista_max_w2.append(c)
+        max_s = max(lista_max_s)
+        max_w1 = max(lista_max_w1)
+        max_w2 = max(lista_max_w2)
+        print("MAX s: ", max_s)
+        print("MAX w1: ", max_w1)
+        print("MAX w2: ", max_w2)
+        if max_s <= epsilon or max_w1 <= epsilon or max_w2 <= epsilon:
+            break
+        #rownania
+        for i in range(n):
+            xi_new = s[i] - c * epsilon / s[i]
+            lista_s_new.append(xi_new)
+            w1_new = w1[i] - c * epsilon / w1[i]
+            lista_w1_new.append(w1_new)
+            w2_new = w2[i] - c * epsilon / w2[i]
+            lista_w2_new.append(w2_new)
+        print("LISTA S_NEW: ", lista_s_new)
+        print("LISTA W1_NEW: ", lista_w1_new)
+        print("LISTA W2_NEW: ", lista_w2_new)
+
+def main():
+    c = 0.1
+    epsilon = 0.0001
+    b = 1.0
+
+    print("I")
+
+    u1 = [0.0, 0.0, 1.0]
+    u2 = [1.0, 0.0, 1.0]
+    u3 = [0.0, 1.0, 1.0]
+    u4 = [1.0, 1.0, 1.0]
+    w1 = [0.0, 1.0, 2.0]
+    w2 = [0.0, 1.0, 2.0]
+    s = [0.0, 1.0, 2.0]
+    n = 3
+    z = {1: 0, 2: 1, 3: 1, 4: 0}
+
+    print("II")
+
+    lista_s_new = []
+    lista_w1_new = []
+    lista_w2_new = []
+
+    for i in range(n):
+        s_i_new = s[i] - c * sum()
+        lista_s_new.append(s_i_new)
+    for i in range(n):
+        w1_new = w1[i] - c * epsilon/w1[i]
+        lista_w1_new.append(w1_new)
+        w2_new = w2[i] - c * epsilon/w2[i]
+        lista_w2_new.append(w2_new)
+    print("LISTA S_NEW: ", lista_s_new)
+    print("LISTA W1_NEW: ", lista_w1_new)
+    print("LISTA W2_NEW: ", lista_w2_new)
+    print("III")
+
+    fun(n, s, lista_s_new, w1, lista_w1_new, w2, lista_w2_new, epsilon, c, b)
+
+
+if __name__ == '__main__':
+    main()
