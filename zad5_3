@@ -1,0 +1,71 @@
+import numpy as np
+
+def f(x):
+    beta = 1.0
+    return 1 / (1 + np.exp(-beta * x))
+
+def df_dx(x):
+    beta = 1.0
+    return beta*np.exp(-beta*x) / (1+np.exp(-beta*x))**2
+
+def xor_bp(z, beta, c, epsilon):
+    global x
+    w = np.array([[0.0, 1.0, 2.0], [0.0, 1.0, 2.0]])
+    sOld = np.array([0.0, 1.0, 2.0])
+    u = np.array([[0.0, 0.0, 1.0], [1.0, 0.0, 1.0], [0.0, 1.0, 1.0], [1.0, 1.0, 1.0]])
+    #u = np.concatenate(( bu, np.ones((4, 1))), axis=1)
+    max_iter = 40
+    current_iter = 0
+    stop_criterion = False
+    while not stop_criterion:
+        x_sy=[]
+        suma = 0
+        for p in range(4):
+            for i in range(2):
+                for j in range(3):
+                    suma = suma + sum(w[i][j] * u[p][j])
+                x = f(suma)
+                x_sy.append(x)
+        print(x)
+        # error = []
+        # for p in range(4):
+        #     er = y[p] - z[p]
+        #     error.append(er)
+        # print("error: ", error)
+        # #error = z.reshape(4, 1) - y
+        # ds = np.zeros(3)
+        # for p in range(4):
+        #     for i in range(3):
+        #         ds[i] = np.sum(error[p] * df_dx(sOld[i] * x[i]))*x[p]
+    #
+    #     dw = np.zeros((2, 3))
+    #     for i in range(2):
+    #         for j in range(3):
+    #             dw[i, j] = np.sum(error * df_dx(sOld[i] * x[i]) * x[i])
+    #     s_new = sOld - c * ds
+    #     w_new = w - c * dw
+    #     if (np.max(np.abs(s_new - sOld)) < epsilon) and (np.max(np.abs(w_new - w)) < epsilon):
+    #         stop_criterion = True
+    #     s = s_new
+    #     w = w_new
+    #     current_iter += 1
+    #     if current_iter >= max_iter:
+    #         stop_criterion = True
+    #         print("Maximum number of iterations reached.")
+    # y = np.zeros((4, 1))
+    # for p in range(4):
+    #     #x = np.dot(w, u[p])
+    #     #x = np.concatenate((f(x, beta), np.array([1.0])))
+    #     y[p] = np.dot(sOld, x)
+    # return w, s, y
+
+u = np.array([[0, 0], [1, 0], [0, 1], [1, 1]])
+z = np.array([0, 1, 1, 0])
+
+beta = 3
+c = 0.00001
+epsilon = 0.0000001
+w, s, y = xor_bp(z, beta, c, epsilon)
+
+print(f"w = {w}, s = {s}")
+print(f"y = {y}")
