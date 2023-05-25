@@ -71,14 +71,18 @@ def main():
                    [0, 1, 0, 0, 0],
                    [0, 1, 0, 0, 0]]], dtype=np.float64)
 
-    w = np.array([[1, 1, 1],
+    w1 = np.array([[1, 1, 1],
                   [1, 0, 0],
                   [1, 0, 0]], dtype=np.float64)
+
+    w2 = np.array([[1, 1, 1],
+                  [1, 1, 1],
+                  [1, 1, 1]], dtype=np.float64)
 
     theta = 2.5
 
     for i in range(len(u)):
-        print(f"y{i+1}\n{conv2d(u[i], w, theta, f)}")
+        print(f"y{i+1}\n{conv2d(u[i], w1, theta, f)}")
 
     print()
 
@@ -100,7 +104,7 @@ def main():
     theta = 2.5/9
 
     for i in range(len(x)):
-        print(f"y{i+1}\n{average_pooling(x[i], w, theta, f)}")
+        print(f"y{i+1}\n{average_pooling(x[i], w2, theta, f)}")
 
 if __name__ == '__main__':
     main()
